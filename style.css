@@ -1,0 +1,317 @@
+/* ==========================================================
+   Actividad 9 - Tema azul neón con animaciones
+   ========================================================== */
+
+:root {
+  --cyan-light: #b8f4ff;
+  --cyan: #22d3ee;
+  --blue: #3b82f6;
+  --indigo: #6366f1;
+  --bg-dark: #050b1a;
+  --bg-card: rgba(8, 18, 40, 0.75);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* ---------- Fondo animado ---------- */
+body {
+  min-height: 100vh;
+  font-family: "Segoe UI", "Trebuchet MS", system-ui, sans-serif;
+  color: var(--cyan-light);
+  background:
+    radial-gradient(circle at 15% 25%, rgba(34, 211, 238, 0.2), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(99, 102, 241, 0.25), transparent 40%),
+    var(--bg-dark);
+  background-size: 150% 150%, 150% 150%, auto;
+  animation: fondoMovil 12s ease-in-out infinite alternate;
+  overflow-x: hidden;
+}
+
+@keyframes fondoMovil {
+  0%   { background-position: 0% 0%, 100% 100%, 0 0; }
+  100% { background-position: 100% 100%, 0% 0%, 0 0; }
+}
+
+/* Cuadrícula tipo "grid" futurista que se desplaza */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, #000 30%, transparent 80%);
+  animation: moverGrid 8s linear infinite;
+}
+
+@keyframes moverGrid {
+  from { background-position: 0 0; }
+  to   { background-position: 48px 48px; }
+}
+
+/* ---------- Contenedor ---------- */
+.contenedor {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+/* ---------- Tarjeta con borde giratorio ---------- */
+.tarjeta {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: 38px 32px 32px;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow:
+    0 0 40px rgba(34, 211, 238, 0.15),
+    0 25px 60px rgba(0, 0, 0, 0.7);
+  animation: entrar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both,
+             flotar 6s ease-in-out 1s infinite;
+}
+
+/* Borde con degradado que gira alrededor de la tarjeta */
+.tarjeta::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 22px;
+  background: conic-gradient(
+    from var(--angulo, 0deg),
+    var(--cyan),
+    var(--indigo),
+    transparent 40%,
+    var(--blue),
+    var(--cyan)
+  );
+  animation: girarBorde 5s linear infinite;
+}
+
+/* Relleno interior para que solo se vea el borde del degradado */
+.tarjeta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 20px;
+  background: #07102a;
+}
+
+@property --angulo {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes girarBorde {
+  to { --angulo: 360deg; }
+}
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(40px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ---------- Título ---------- */
+h1 {
+  margin-bottom: 6px;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  background: linear-gradient(90deg, var(--cyan-light), var(--cyan), var(--indigo), var(--cyan-light));
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textoBrillo 5s linear infinite;
+}
+
+@keyframes textoBrillo {
+  from { background-position: 0% 0; }
+  to   { background-position: 250% 0; }
+}
+
+.descripcion {
+  margin-bottom: 28px;
+  text-align: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(184, 244, 255, 0.6);
+  animation: aparecerTexto 0.8s ease 0.3s both;
+}
+
+/* ---------- Etiqueta e input ---------- */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 22px;
+  padding: 13px 16px;
+  font-size: 1.1rem;
+  color: var(--cyan-light);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+input:hover {
+  border-color: rgba(34, 211, 238, 0.7);
+}
+
+input:focus {
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 3px rgba(34, 211, 238, 0.18),
+    0 0 22px rgba(34, 211, 238, 0.45);
+}
+
+/* ---------- Botón ---------- */
+button {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  overflow: hidden;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #02121f;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--cyan), var(--blue) 50%, var(--indigo));
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 6px 22px rgba(59, 130, 246, 0.4);
+  transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+  animation: gradienteBoton 5s ease infinite, pulso 2.4s ease-in-out infinite;
+}
+
+@keyframes gradienteBoton {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulso {
+  0%, 100% { box-shadow: 0 6px 22px rgba(59, 130, 246, 0.4); }
+  50%      { box-shadow: 0 6px 36px rgba(34, 211, 238, 0.8); }
+}
+
+/* Destello que cruza el botón */
+button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  animation: destello 3s ease-in-out infinite;
+}
+
+@keyframes destello {
+  0%, 55% { left: -80%; }
+  100%    { left: 140%; }
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.12);
+}
+
+button:active {
+  transform: translateY(0) scale(0.97);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--cyan-light);
+  outline-offset: 3px;
+}
+
+/* ---------- Resultado ---------- */
+#resultado {
+  margin-top: 22px;
+  min-height: 1.4em;
+  padding: 14px 16px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--cyan-light);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-left: 4px solid var(--cyan);
+  border-radius: 10px;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+  animation: resultadoEntra 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Sin texto, el cuadro no se muestra */
+#resultado:empty {
+  display: none;
+}
+
+@keyframes resultadoEntra {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes aparecerTexto {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .tarjeta {
+    padding: 30px 22px 26px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+/* Respeta a quien prefiere menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
